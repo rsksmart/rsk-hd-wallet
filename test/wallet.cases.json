@@ -1,0 +1,18 @@
+{
+  "seed": "cf2698c33ce6db093347c3cb3f215792e172039fc9bf07d6d03f1b4d01a49a96759884193dbcae4a9ba78526d05c7556348244a361e7e12d2d361651700f7463",
+  "coinType": 60,
+  "cases": [
+    {
+      "accountId": 0,
+      "addressIndx": 0,
+      "address": "0x6207882f51e02679AFF97D113EcB0f334C1bF8F6",
+      "privKey": "0xd73ca66222b76304632335b29f2dff0e85232669d10d2262126dcf3105227284"
+    },
+    {
+      "accountId": 0,
+      "addressIndx": 19,
+      "address": "0x8A42fA7eFeb939BF189Fe4758377643D633F446F",
+      "privKey": "0xaf14396b78517fe4c71da608279232fb54d50b38225de2f771ac9e74dd94c337"
+    }
+  ]
+}
