@@ -4,6 +4,13 @@ const Tx = require('./Tx')
 const { toHexString, isNumericInteger } = require('./utils')
 const { BASE_PATH, MIN_SEED_LEN } = require('./constants')
 
+/**
+ * @description Wallet constructor
+ * @param {Object} options {seed,coinType}
+ * @param {String} options.seed
+ * @param {Number} options.coinType
+ * @construct Wallet
+ */
 function Wallet ({ seed, coinType }) {
   seed = validateSeed(seed)
   if (!seed) throw new TypeError('Invalid seed')
@@ -32,15 +39,26 @@ function Wallet ({ seed, coinType }) {
     return { publicKey, address, privateKey }
   }
 
-  const validateId = id => {
-    if (isNumericInteger(id)) {
-      id = parseInt(id)
-      if (!isNaN(id) && id > -1 && id < 0x80000000) {
-        return id
-      }
-    }
-  }
+  /**
+   * Number between **0 - 2147483647** inclusive.
+   * A strings containing only numbers is also accepted.
+   * @name PathKey
+   * @typedef {number | string} PathKey
+   */
 
+  /**
+  * Derivated account data
+  * @name AccountData
+  * @typedef {object} AccountData
+  */
+
+  /**
+   * @description Get account/address data
+   * @param {PathKey} accountId
+   * @param {PathKey} addressIndx
+   * @returns {AccountData}
+   * @memberof Wallet#
+   */
   const getAccount = (accountId, addressIndx = 0) => {
     accountId = validateId(accountId)
     addressIndx = validateId(addressIndx)
@@ -58,11 +76,26 @@ function Wallet ({ seed, coinType }) {
     return Object.freeze(account)
   }
 
+  /**
+  * @description Validate data and create transaction
+  * @param {object} txData
+  * @returns {object} instance of {@link https://github.com/ethereumjs/ethereumjs-tx ethereumjs-tx}
+  * @memberof Wallet#
+  */
   const createTransaction = (txData) => Tx(txData)
 
   // const getExtPriv = () => node.toBase58()
 
   return Object.freeze({ getAccount, createTransaction })
+}
+
+function validateId (id) {
+  if (isNumericInteger(id)) {
+    id = parseInt(id)
+    if (!isNaN(id) && id > -1 && id < 0x80000000) {
+      return id
+    }
+  }
 }
 
 function validateSeed (hexString) {
@@ -88,4 +121,4 @@ function getAddress (child) {
   return { address, publicKey }
 }
 
-module.exports = Wallet
+module.exports = { Wallet, isValidId: (id) => validateId(id) !== undefined }
