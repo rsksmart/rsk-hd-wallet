@@ -19,37 +19,40 @@ function Wallet ({ seed, coinType }) {
     return path.join('/')
   }
 
-  const getChild = (accountId, addressIndx = 0) => {
-    const path = getPath({ accountId, addressIndx })
+  const getChild = (path) => {
     const child = node.derivePath(path)
     return child
   }
 
   const deriveAccount = (child) => {
-    const { address, pubKey } = getAddress(child)
+    const { address, publicKey } = getAddress(child)
     const privateKey = (toHex) => {
       const key = getPrivateKey(child)
       return (toHex) ? toHexString(key) : key
     }
-    return { pubKey, address, privateKey }
+    return { publicKey, address, privateKey }
   }
 
-  const isValidId = id => {
+  const validateId = id => {
     id = parseInt(id)
-    return !isNaN(id) && id > -1 && id < 0x80000000
+    return (!isNaN(id) && id > -1 && id < 0x80000000) ? id : undefined
   }
 
-  const getAccount = (id, index = 0) => {
-    if (!isValidId(id)) throw new TypeError('invalid account id')
-    if (!isValidId(index)) throw new TypeError('invalid address index')
+  const getAccount = (accountId, addressIndx = 0) => {
 
-    let account = deriveAccount(getChild(id, index))
+    accountId = validateId(accountId)
+    addressIndx = validateId(addressIndx)
+    if (undefined === accountId) throw new TypeError('invalid account id')
+    if (undefined === addressIndx) throw new TypeError('invalid address index')
+
+    const path = getPath({ accountId, addressIndx })
+    let account = deriveAccount(getChild(path))
     if (!account) return
     Object.keys(account).forEach(p => {
       const value = account[p]
       account[p] = (Buffer.isBuffer(value)) ? toHexString(value) : value
     })
-    account = Object.assign({ id, index }, account)
+    account = Object.assign({ accountId, addressIndx, path }, account)
     return Object.freeze(account)
   }
 
@@ -83,14 +86,14 @@ function getPrivateKey (child) {
 
 function getPublicKey (child) {
   const privKey = getPrivateKey(child)
-  const pubKey = ethUtil.privateToPublic(privKey)
-  return pubKey
+  const publicKey = ethUtil.privateToPublic(privKey)
+  return publicKey
 }
 
 function getAddress (child) {
-  const pubKey = getPublicKey(child)
-  const address = ethUtil.pubToAddress(pubKey)
-  return { address, pubKey }
+  const publicKey = getPublicKey(child)
+  const address = ethUtil.pubToAddress(publicKey)
+  return { address, publicKey }
 }
 
 module.exports = Wallet
