@@ -1,7 +1,7 @@
 const bip32 = require('bip32')
 const ethUtil = require('ethereumjs-util')
 const Tx = require('./Tx')
-const { toHexString } = require('./utils')
+const { toHexString, isNumericInteger } = require('./utils')
 const { BASE_PATH, MIN_SEED_LEN } = require('./constants')
 
 function Wallet ({ seed, coinType }) {
@@ -10,8 +10,6 @@ function Wallet ({ seed, coinType }) {
   if (isNaN(parseInt(coinType))) throw new TypeError('Invalid coin type')
 
   const node = bip32.fromSeed(seed)
-  if (!node) throw new Error('Error creating node')
-
   const change = 0
 
   const getPath = ({ accountId, addressIndx }) => {
@@ -35,8 +33,12 @@ function Wallet ({ seed, coinType }) {
   }
 
   const validateId = id => {
-    id = parseInt(id)
-    return (!isNaN(id) && id > -1 && id < 0x80000000) ? id : undefined
+    if (isNumericInteger(id)) {
+      id = parseInt(id)
+      if (!isNaN(id) && id > -1 && id < 0x80000000) {
+        return id
+      }
+    }
   }
 
   const getAccount = (accountId, addressIndx = 0) => {

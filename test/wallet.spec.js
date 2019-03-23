@@ -23,7 +23,7 @@ describe('# Wallet', () => {
   describe('getAccount', () => {
 
     describe('bad arguments', () => {
-      const fail = ['a', '11111111111111111111111', -200, 2147483648, 0x80000000, '0x80000001']
+      const fail = ['a', '0xa', '11111111111111111111111', '-200', -200, 2147483648, 0x80000000, '0x80000001']
       fail.forEach(value => {
         it(`accountId: '${value}' should return TypeError`, () => {
           expect(() => wallet.getAccount(value, 0)).throw(TypeError)
@@ -36,7 +36,7 @@ describe('# Wallet', () => {
     })
 
     describe('account creation', () => {
-      const values = [0, 1, '10', 0x120, '0x2000', '121212']
+      const values = [0, 1, '10', '121212']
       const total = values.length
       const tests = [...new Array(total ** 2)].map((p, i) => [values[i / total | 0], values[i % total]])
       tests.forEach(t => {

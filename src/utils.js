@@ -19,4 +19,6 @@ const toHexString = value => {
   return value
 }
 
-module.exports = { generateSeed, gtZero, toHexString }
+const isNumericInteger = value => parseInt(String(value)).toString(10) === String(value)
+
+module.exports = { generateSeed, gtZero, toHexString, isNumericInteger }
