@@ -1,6 +1,7 @@
 const bip32 = require('bip32')
 const ethUtil = require('ethereumjs-util')
 const Tx = require('./Tx')
+const { toHexString } = require('./utils')
 const { BASE_PATH, MIN_SEED_LEN } = require('./constants')
 
 function Wallet ({ seed, coinType }) {
@@ -39,7 +40,6 @@ function Wallet ({ seed, coinType }) {
   }
 
   const getAccount = (accountId, addressIndx = 0) => {
-
     accountId = validateId(accountId)
     addressIndx = validateId(addressIndx)
     if (undefined === accountId) throw new TypeError('invalid account id')
@@ -61,16 +61,6 @@ function Wallet ({ seed, coinType }) {
   // const getExtPriv = () => node.toBase58()
 
   return Object.freeze({ getAccount, transaction })
-}
-
-function toHexString (value) {
-  if (Buffer.isBuffer(value)) {
-    value = value.toString('hex')
-  }
-  if (value.substring(0, 2) !== '0x') {
-    value = `0x${value}`
-  }
-  return value
 }
 
 function validateSeed (hexString) {

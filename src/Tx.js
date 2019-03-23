@@ -1,6 +1,7 @@
 
 const EthTx = require('ethereumjs-tx')
 const { isValidAddress } = require('ethereumjs-util')
+const { gtZero } = require('./utils')
 
 function Tx (txData) {
   const { to, nonce, gasPrice, gasLimit, chainId, data } = txData
@@ -12,10 +13,6 @@ function Tx (txData) {
   if (!gtZero(gasLimit)) throw new TypeError('Invalid gasLimit')
   const tx = new EthTx(txData)
   return tx
-}
-
-function gtZero (value) {
-  return parseInt(value) > 0
 }
 
 module.exports = Tx
