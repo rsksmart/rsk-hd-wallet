@@ -4,7 +4,7 @@
   "description": "RSK Hierarchical Deterministic Wallet",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
+    "test": "./node_modules/.bin/mocha --recursive",
     "lint": "./node_modules/.bin/eslint src/**/*"
   },
   "author": "emi",
