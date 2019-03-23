@@ -58,11 +58,11 @@ function Wallet ({ seed, coinType }) {
     return Object.freeze(account)
   }
 
-  const transaction = (txData) => Tx(txData)
+  const createTransaction = (txData) => Tx(txData)
 
   // const getExtPriv = () => node.toBase58()
 
-  return Object.freeze({ getAccount, transaction })
+  return Object.freeze({ getAccount, createTransaction })
 }
 
 function validateSeed (hexString) {
