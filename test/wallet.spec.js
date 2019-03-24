@@ -1,4 +1,4 @@
-const Wallet = require('../src/Wallet')
+const { Wallet } = require('../src/Wallet')
 const { expect } = require('chai')
 const wCases = require('./wallet.cases.json')
 const { BASE_PATH } = require('../src/constants')
