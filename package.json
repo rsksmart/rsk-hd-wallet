@@ -8,6 +8,9 @@
     "lint": "./node_modules/.bin/eslint src/**/*",
     "doc": "node .doc/makeReadme.js > README.md"
   },
+  "bin": {
+    "generate-seed": "tools/generateSeed.js"
+  },
   "author": "emi",
   "license": "MIT",
   "dependencies": {
