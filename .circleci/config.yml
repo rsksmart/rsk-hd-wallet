@@ -1,0 +1,27 @@
+version: 2.1
+orbs:
+  node: circleci/node@2.1.1
+
+jobs:
+  test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run doc
+
+workflows:
+  test:
+    jobs:
+      - test
+  matrix-tests:
+    jobs:
+      - node/test:
+          version: 13.11.0
+      - node/test:
+          version: 12.16.0
+      - node/test:
+          version: 10.19.0
